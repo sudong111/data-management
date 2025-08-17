@@ -24,3 +24,17 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/*-----------------------------------------------------------------------*/
+
+.header {
+  @apply flex justify-center
+}
+
+.header-navigator {
+  @apply flex items-center gap-10 p-3 m-3 border rounded-2xl
+}
+
+.header-icon {
+  @apply w-6 h-6
+}
