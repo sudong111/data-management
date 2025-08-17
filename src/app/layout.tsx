@@ -1,17 +1,21 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/app/components/header";
+import AppThemeProvider from "@/app/components/appThemeProvider"
 
 export const metadata: Metadata = {
   title: "Loop Station",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+
     return (
-    <html>
+    <html lang="en">
         <body>
-        <Header/>
-        {children}
+        <AppThemeProvider>
+            <Header />
+            {children}
+        </AppThemeProvider>
         </body>
     </html>
 )
