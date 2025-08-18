@@ -27,7 +27,7 @@ export async function POST(req: Request) {
 
         const token = jwt.sign({ userId: user.id, email: user.email }, SECRET, { expiresIn: "1h" });
 
-        return NextResponse.json({ success: true, token, user: { id: user.id, email: user.email } });
+        return NextResponse.json({ success: true, token, user: { id: user.id, email: user.email }, message: "로그인 성공" });
     }
 
     // 이메일 체크

@@ -1,21 +1,28 @@
 'use client'
+import {useState} from "react";
+import {loginUser} from "@/lib/api";
+import { useRouter } from "next/navigation";
+import {useAuthStore} from "@/store/auth";
+import { toast } from 'react-toastify';
 import {Card, CardContent, CardHeader, CardTitle} from "@/app/components/ui/card"
 import {Button} from "@/app/components/ui/button"
 import {Label} from "@/app/components/ui/label"
 import {Input} from "@/app/components/ui/input"
-import {useState} from "react";
-import {loginUser} from "@/lib/api";
 
 export default function Login() {
+    const router = useRouter();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [message, setMessage] = useState("");
 
     const handleLogin = async (event: React.FormEvent) => {
         event.preventDefault();
 
         const data = await loginUser(email, password);
-        setMessage(data.success ? "로그인 완료 ✅" : data.message);
+        toast[data.success ? "success" : "error"](data.message);
+        if (data.success) {
+            useAuthStore.getState().login(data.user, data.token);
+            router.push("/");
+        }
     };
     
     return (

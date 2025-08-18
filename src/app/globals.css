@@ -8,7 +8,7 @@
 }
 
 .header-navigator {
-  @apply flex justify-center items-center m-6
+  @apply relative flex justify-center items-center m-6
 }
 
 .header-container {
