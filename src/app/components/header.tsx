@@ -9,19 +9,21 @@ export default function Header() {
     return (
         <header className="header">
             <nav className="header-navigator">
-                <Link href="/">
-                    <Button variant="ghost"><BiHomeHeart className="header-icon" /></Button>
-                </Link>
+                <div className="header-container">
+                    <Link href="/">
+                        <Button variant="ghost"><BiHomeHeart className="header-icon" /></Button>
+                    </Link>
 
-                <Link href="/auth/login">
-                    <Button variant="ghost"><TbLogin2 className="header-icon" /></Button>
-                </Link>
+                    <Link href="/auth/login">
+                        <Button variant="ghost"><TbLogin2 className="header-icon" /></Button>
+                    </Link>
 
-                <Link href="/auth/signup">
-                    <Button variant="ghost"><FaUserPlus className="header-icon" /></Button>
-                </Link>
+                    <Link href="/auth/signup">
+                        <Button variant="ghost"><FaUserPlus className="header-icon" /></Button>
+                    </Link>
 
-                <Theme />
+                    <Theme />
+                </div>
             </nav>
         </header>
     )
