@@ -4,15 +4,11 @@
 /*#ec6f00 main color*/
 
 .header {
-  @apply absolute w-full
-}
-
-.header-navigator {
-  @apply relative flex justify-center items-center m-6
+  @apply sticky w-full top-0
 }
 
 .header-container {
-  @apply flex gap-10 p-3 border rounded-2xl
+  @apply flex justify-between gap-10 p-3 border-b
 }
 
 .header-icon {
@@ -20,11 +16,15 @@
 }
 
 .auth-wrapper {
-  @apply flex justify-center items-center min-h-svh
+  @apply flex flex-1 justify-center items-center
 }
 
 .auth-container {
   @apply min-w-[25rem]
+}
+
+.wrapper {
+  @apply relative flex flex-col min-h-screen
 }
 
 @custom-variant dark (&:is(.dark *));

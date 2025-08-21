@@ -15,19 +15,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
         <body>
         <AppThemeProvider>
-            <Header/>
-            {children}
-            <ToastContainer
-                position="bottom-right"
-                autoClose={3000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                pauseOnHover
-                theme="colored"
-            />
+            <div className="wrapper">
+                <Header/>
+                {children}
+                <ToastContainer
+                    position="bottom-right"
+                    autoClose={3000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    pauseOnHover
+                    theme="colored"
+                />
+            </div>
         </AppThemeProvider>
         </body>
     </html>
