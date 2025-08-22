@@ -19,6 +19,9 @@
   @apply flex flex-1 justify-center items-center
 }
 
+.test {
+  @apply justify-between
+}
 .auth-container {
   @apply min-w-[25rem]
 }

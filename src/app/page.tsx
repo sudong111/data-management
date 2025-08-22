@@ -1,15 +1,13 @@
 'use client'
-export default function Home() {
 
+import AssetCard from "./components/assetCard";
+import {getRate} from "@/lib/utils"
+
+export default function Home() {
   const data = {
     asset: 33493920,
     current_asset: 42894890
   }
-
-  const getRate = (asset: number, current_asset: number) => {
-    const rate = ((current_asset - asset) / asset) * 100;
-    return Number(rate.toFixed(2));
-  };
 
   const rate = getRate(data.asset, data.current_asset);
 
@@ -25,7 +23,15 @@ export default function Home() {
             </p>
           </div>
         </div>
-        <div>test</div>
+        <div>
+          <p className="mb-3">투자 종목 (국내)</p>
+          <div className="flex gap-5">
+            <AssetCard title={"삼성전자"} price={12760000} amount={200} buy_price={63800} current_price={71400} />
+            <AssetCard title={"삼성전자"} price={12760000} amount={200} buy_price={63800} current_price={71400} />
+            <AssetCard title={"삼성전자"} price={12760000} amount={200} buy_price={63800} current_price={71400} />
+            <AssetCard title={"삼성전자"} price={12760000} amount={200} buy_price={63800} current_price={71400} />
+          </div>
+        </div>
         <div>test</div>
         <div>test</div>
         <div>test</div>
