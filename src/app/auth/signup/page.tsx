@@ -1,34 +1,48 @@
 'use client';
 import { useState } from "react";
-import { checkEmail, signupUser } from "@/lib/api";
-import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "@/app/components/ui/card";
-import {Label} from "@/app/components/ui/label";
-import {Input} from "@/app/components/ui/input";
-import {Button} from "@/app/components/ui/button";
-import {Avatar, AvatarFallback, AvatarImage} from "@/app/components/ui/avatar";
+import { useSignup } from "@/app/hooks/auth/useSignup";
+import { useCheckEmail } from "@/app/hooks/auth/useCheckEmail";
+import { toast } from "react-toastify";
+import { Card, CardContent, CardHeader, CardTitle } from "@/app/components/ui/card";
+import { Label } from "@/app/components/ui/label";
+import { Input } from "@/app/components/ui/input";
+import { Button } from "@/app/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/app/components/ui/avatar";
 import { FaUser } from "react-icons/fa";
 
 export default function Signup() {
+    const { signup } = useSignup();
+    const { checkEmail } = useCheckEmail();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [passwordCheck, setPasswordCheck] = useState("");
-    const [message, setMessage] = useState("");
 
     const handleCheckEmail = async () => {
-        const data = await checkEmail(email);
-        setMessage(data.success ? "사용 가능한 이메일 ✅" : data.message);
-    }
+        if (!email) return;
 
-    const handleSignup = async (event: React.FormEvent) => {
+        const result = await checkEmail(email);
+        if (!result) {
+            toast.error("이미 사용 중인 이메일입니다");
+        } else {
+            toast.success("사용 가능한 이메일입니다");
+        }
+    };
+
+    const handleSignup = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         if (password !== passwordCheck) {
-            setMessage("비밀번호가 일치하지 않습니다 ❌");
+            toast.error("비밀번호가 일치하지 않습니다");
             return;
         }
 
-        const data = await signupUser(email, password);
-        setMessage(data.success ? "회원가입 완료 ✅" : data.message);
+        const result = await signup(email, password);
+        if (result) {
+            toast.success(`회원가입 완료: ${result.email}`);
+            setEmail("");
+            setPassword("");
+            setPasswordCheck("");
+        }
     };
 
     return (
@@ -47,19 +61,19 @@ export default function Signup() {
                                 </Avatar>
                             </div>
                             <div className="grid gap-2">
-                                <Label htmlFor="email">Email</Label>
+                                <Label htmlFor="email">이메일</Label>
                                 <div className="flex gap-3">
                                     <Input id="email" type="email" placeholder="user@example.com"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         required
                                     />
-                                    <Button type="button" onClick={() => handleCheckEmail()}>check</Button>
+                                    <Button type="button" onClick={() => handleCheckEmail()}>중복 체크</Button>
                                 </div>
                             </div>
                             <div className="grid gap-2">
                                 <div className="flex items-center">
-                                    <Label htmlFor="password">Password</Label>
+                                    <Label htmlFor="password">비밀 번호</Label>
                                 </div>
                                 <Input id="password" type="password"
                                        value={password}
@@ -69,7 +83,7 @@ export default function Signup() {
                             </div>
                             <div className="grid gap-2">
                                 <div className="flex items-center">
-                                    <Label htmlFor="password_check">Password Check</Label>
+                                    <Label htmlFor="password_check">비밀 번호 확인</Label>
                                 </div>
                                 <Input id="password_check" type="password"
                                        value={passwordCheck}

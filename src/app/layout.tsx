@@ -1,37 +1,39 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import 'react-toastify/dist/ReactToastify.css';
-import Header from "@/app/components/header";
-import AppThemeProvider from "@/app/components/appThemeProvider"
 import { ToastContainer } from 'react-toastify';
+import ApolloWrapper from "@/app/components/apolloWrapper";
+import AppThemeProvider from "@/app/components/appThemeProvider"
+import Header from "@/app/components/header";
 
 export const metadata: Metadata = {
-  title: "Loop Station",
+    title: "Asset Management",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-
     return (
-    <html lang="en">
+        <html lang="en">
         <body>
-        <AppThemeProvider>
-            <div className="wrapper">
-                <Header/>
-                {children}
-                <ToastContainer
-                    position="bottom-right"
-                    autoClose={3000}
-                    hideProgressBar={false}
-                    newestOnTop={false}
-                    closeOnClick
-                    rtl={false}
-                    pauseOnFocusLoss
-                    pauseOnHover
-                    theme="colored"
-                />
-            </div>
-        </AppThemeProvider>
+        <ApolloWrapper>
+            <AppThemeProvider>
+                <div className="wrapper">
+                    <Header />
+                    {children}
+                    <ToastContainer
+                        position="bottom-right"
+                        autoClose={3000}
+                        hideProgressBar={false}
+                        newestOnTop={false}
+                        closeOnClick
+                        rtl={false}
+                        pauseOnFocusLoss
+                        pauseOnHover
+                        theme="colored"
+                    />
+                </div>
+            </AppThemeProvider>
+        </ApolloWrapper>
         </body>
-    </html>
-)
+        </html>
+    );
 }

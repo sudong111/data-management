@@ -1,8 +1,8 @@
 'use client'
 import {useState} from "react";
-import {loginUser} from "@/lib/api";
 import { useRouter } from "next/navigation";
-import {useAuthStore} from "@/store/auth";
+import { useLogin } from "@/app/hooks/auth/useLogin"
+import { useAuthStore } from "@/store/auth";
 import { toast } from 'react-toastify';
 import {Card, CardContent, CardHeader, CardTitle} from "@/app/components/ui/card"
 import {Button} from "@/app/components/ui/button"
@@ -10,6 +10,7 @@ import {Label} from "@/app/components/ui/label"
 import {Input} from "@/app/components/ui/input"
 
 export default function Login() {
+    const { login } = useLogin();
     const router = useRouter();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -17,10 +18,12 @@ export default function Login() {
     const handleLogin = async (event: React.FormEvent) => {
         event.preventDefault();
 
-        const data = await loginUser(email, password);
-        toast[data.success ? "success" : "error"](data.message);
-        if (data.success) {
-            useAuthStore.getState().login(data.user, data.token);
+        const result = await login(email, password);
+        if (!result) {
+            toast.error("비밀번호가 일치하지 않거나, 존재하지 않는 유저입니다.");
+        } else {
+            toast.success("로그인 성공");
+            useAuthStore.getState().login(result.user, result.token);
             router.push("/");
         }
     };
