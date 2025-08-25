@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { createClient } from "@supabase/supabase-js";
+import { GraphQLError } from "graphql";
 
 const supabase = createClient(
     process.env.SUPABASE_URL!,
@@ -19,7 +20,9 @@ export const resolvers = {
                 .single();
 
             if(error) {
-                throw new Error(error.message);
+                throw new GraphQLError("알 수 없는 오류", {
+                    extensions: { code: "INTERNET_SERVER_ERROR", http: { status: 500 } }
+                });
             }
 
             return !user;
@@ -35,12 +38,16 @@ export const resolvers = {
                 .single();
 
             if (error || !user) {
-                throw new Error("사용자 없음");
+                throw new GraphQLError("사용자 없음", {
+                    extensions: { code: "BAD_REQUEST", http: { status: 400 } }
+                });
             }
 
             const valid = await bcrypt.compare(password, user.password);
             if (!valid) {
-                throw new Error("비밀번호가 일치하지 않음");
+                throw new GraphQLError("비밀번호가 일치하지 않음", {
+                    extensions: { code: "UNAUTHORIZED", http: { status: 401 } }
+                });
             }
 
             const token = jwt.sign(
@@ -63,7 +70,9 @@ export const resolvers = {
                 .single();
 
             if (existingUser) {
-                throw new Error("이미 존재하는 이메일");
+                throw new GraphQLError("이미 존재하는 이메일", {
+                    extensions: { code: "BAD_REQUEST", http: { status: 400 } }
+                });
             }
 
             const hashed = await bcrypt.hash(password, 10);
@@ -75,7 +84,9 @@ export const resolvers = {
                 .single();
 
             if (error) {
-                throw new Error(error.message);
+                throw new GraphQLError("알 수 없는 오류", {
+                    extensions: { code: "INTERNET_SERVER_ERROR", http: { status: 500 } }
+                });
             }
 
             return data;

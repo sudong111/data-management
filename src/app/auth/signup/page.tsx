@@ -9,10 +9,12 @@ import { Input } from "@/app/components/ui/input";
 import { Button } from "@/app/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/app/components/ui/avatar";
 import { FaUser } from "react-icons/fa";
+import {useRouter} from "next/navigation";
 
 export default function Signup() {
     const { signup } = useSignup();
     const { checkEmail } = useCheckEmail();
+    const router = useRouter();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [passwordCheck, setPasswordCheck] = useState("");
@@ -20,11 +22,14 @@ export default function Signup() {
     const handleCheckEmail = async () => {
         if (!email) return;
 
-        const result = await checkEmail(email);
-        if (!result) {
+        try {
+            const result = await checkEmail(email);
+
+            if(result) {
+                toast.success("사용 가능한 이메일입니다");
+            }
+        } catch (error) {
             toast.error("이미 사용 중인 이메일입니다");
-        } else {
-            toast.success("사용 가능한 이메일입니다");
         }
     };
 
@@ -36,12 +41,15 @@ export default function Signup() {
             return;
         }
 
-        const result = await signup(email, password);
-        if (result) {
-            toast.success(`회원가입 완료: ${result.email}`);
-            setEmail("");
-            setPassword("");
-            setPasswordCheck("");
+        try {
+            const result = await signup(email, password);
+
+            if(result) {
+                toast.success(`회원가입 완료: ${result.email}`);
+                router.push("/");
+            }
+        } catch (error) {
+            toast.error("회원가입에 실패했습니다.");
         }
     };
 

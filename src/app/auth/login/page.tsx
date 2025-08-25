@@ -18,13 +18,16 @@ export default function Login() {
     const handleLogin = async (event: React.FormEvent) => {
         event.preventDefault();
 
-        const result = await login(email, password);
-        if (!result) {
+        try {
+            const result = await login(email, password);
+
+            if(result) {
+                toast.success("로그인 성공");
+                useAuthStore.getState().login(result.user, result.token);
+                router.push("/");
+            }
+        } catch (error) {
             toast.error("비밀번호가 일치하지 않거나, 존재하지 않는 유저입니다.");
-        } else {
-            toast.success("로그인 성공");
-            useAuthStore.getState().login(result.user, result.token);
-            router.push("/");
         }
     };
     
