@@ -19,8 +19,12 @@ export const resolvers = {
                 .eq("email", email)
                 .single();
 
+            if(error?.code === 'PGRST116') {
+                return true;
+            }
+
             if(error) {
-                throw new GraphQLError("알 수 없는 오류", {
+                throw new GraphQLError(error.message, {
                     extensions: { code: "INTERNET_SERVER_ERROR", http: { status: 500 } }
                 });
             }
@@ -37,9 +41,15 @@ export const resolvers = {
                 .eq("email", email)
                 .single();
 
-            if (error || !user) {
-                throw new GraphQLError("사용자 없음", {
+            if(error?.code === 'PGRST116') {
+                throw new GraphQLError("계정이 존재하지 않습니다.", {
                     extensions: { code: "BAD_REQUEST", http: { status: 400 } }
+                });
+            }
+
+            if(error) {
+                throw new GraphQLError(error.message, {
+                    extensions: { code: "INTERNET_SERVER_ERROR", http: { status: 500 } }
                 });
             }
 
